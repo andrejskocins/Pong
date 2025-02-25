@@ -1,0 +1,131 @@
+[gd_scene load_steps=3 format=3 uid="uid://5im8ns2inh8p"]
+
+[ext_resource type="Theme" uid="uid://i6g0q4eu2djh" path="res://assets/fonts/theme.tres" id="1_fognx"]
+[ext_resource type="Script" path="res://scenes/menu.gd" id="1_wqhq6"]
+
+[node name="Menu" type="Control" node_paths=PackedStringArray("score_label", "score_slider")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wqhq6")
+score_label = NodePath("VBoxContainer/HBoxContainer2/Score")
+score_slider = NodePath("VBoxContainer/HBoxContainer2/ScoreSelector")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -61.5
+offset_right = 100.0
+offset_bottom = 61.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 48
+text = "PONG"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 24
+text = "play"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayVsAI" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 24
+text = "vs AI"
+
+[node name="PlayVsPlayer" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 24
+text = "vs Player"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 16
+text = "max score:"
+vertical_alignment = 1
+
+[node name="Score" type="Label" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 16
+text = "3"
+horizontal_alignment = 1
+
+[node name="ScoreSelector" type="HSlider" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 9.0
+value = 3.0
+
+[node name="Quit" type="Button" parent="."]
+custom_minimum_size = Vector2(50, 36)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -63.0
+offset_top = -56.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 10
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 20
+text = "quit"
+
+[node name="Author" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 185.0
+grow_vertical = 0
+theme = ExtResource("1_fognx")
+theme_override_font_sizes/font_size = 8
+text = "  made by Andrejs Kocins"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/PlayVsAI" to="." method="_on_play_vs_ai_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/PlayVsPlayer" to="." method="_on_play_vs_player_pressed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/ScoreSelector" to="." method="_on_score_selector_value_changed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

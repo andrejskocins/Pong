@@ -1,0 +1,233 @@
+[gd_scene load_steps=11 format=3 uid="uid://ch8b3w3h3kbxi"]
+
+[ext_resource type="Script" path="res://scenes/game.gd" id="1_bifdd"]
+[ext_resource type="PackedScene" uid="uid://0jyr3iyau70y" path="res://scenes/player.tscn" id="2_7y1e6"]
+[ext_resource type="PackedScene" uid="uid://da3bupcqr53k0" path="res://scenes/opponent.tscn" id="3_eld75"]
+[ext_resource type="PackedScene" uid="uid://cqqy146ulk1lb" path="res://scenes/ball.tscn" id="4_1q3t1"]
+[ext_resource type="Theme" uid="uid://i6g0q4eu2djh" path="res://assets/fonts/theme.tres" id="5_vu7lj"]
+[ext_resource type="Script" path="res://scenes/countdown.gd" id="6_qrc45"]
+[ext_resource type="Script" path="res://scenes/pause_menu.gd" id="7_l5kea"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0jrrb"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n2q28"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7jtre"]
+size = Vector2(20, 360)
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("opponent", "ball_node_a", "left_scoreboard", "right_scoreboard", "countdown", "end_round_screen", "winner_label")]
+script = ExtResource("1_bifdd")
+opponent = NodePath("Opponent")
+ball_node_a = NodePath("Ball")
+left_scoreboard = NodePath("Scoreboard/LeftScore")
+right_scoreboard = NodePath("Scoreboard/RightScore")
+countdown = NodePath("Countdown")
+end_round_screen = NodePath("EndRoundScreen")
+winner_label = NodePath("EndRoundScreen/Label")
+
+[node name="Player" parent="." instance=ExtResource("2_7y1e6")]
+position = Vector2(30, 180)
+collision_layer = 8
+collision_mask = 3
+platform_floor_layers = 4294967042
+
+[node name="Opponent" parent="." instance=ExtResource("3_eld75")]
+position = Vector2(610, 180)
+collision_layer = 8
+collision_mask = 3
+platform_floor_layers = 4294967042
+script = null
+
+[node name="Ball" parent="." instance=ExtResource("4_1q3t1")]
+visible = false
+position = Vector2(320, 180)
+collision_mask = 14
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Upper" type="CollisionShape2D" parent="Walls"]
+position = Vector2(320, 10)
+shape = SubResource("WorldBoundaryShape2D_0jrrb")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/Upper"]
+custom_minimum_size = Vector2(640, 10)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Lower" type="CollisionShape2D" parent="Walls"]
+position = Vector2(320, 350)
+shape = SubResource("WorldBoundaryShape2D_n2q28")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/Lower"]
+custom_minimum_size = Vector2(640, 10)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="LeftGoal" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftGoal"]
+position = Vector2(-10, 180)
+shape = SubResource("RectangleShape2D_7jtre")
+
+[node name="RightGoal" type="Area2D" parent="."]
+position = Vector2(640, 0)
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightGoal"]
+position = Vector2(10, 180)
+shape = SubResource("RectangleShape2D_7jtre")
+
+[node name="Scoreboard" type="Control" parent="."]
+texture_filter = 1
+clip_contents = true
+custom_minimum_size = Vector2(640, 360)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="LeftScore" type="Label" parent="Scoreboard"]
+layout_mode = 1
+offset_left = 60.0
+offset_top = 20.0
+offset_right = 80.0
+offset_bottom = 43.0
+theme = ExtResource("5_vu7lj")
+text = "0"
+
+[node name="RightScore" type="Label" parent="Scoreboard"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -70.0
+offset_top = 20.0
+offset_right = -60.0
+offset_bottom = 43.0
+grow_horizontal = 0
+theme = ExtResource("5_vu7lj")
+text = "0"
+horizontal_alignment = 2
+
+[node name="Countdown" type="Label" parent="."]
+custom_minimum_size = Vector2(640, 360)
+offset_right = 640.0
+offset_bottom = 360.0
+theme = ExtResource("5_vu7lj")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_qrc45")
+
+[node name="Timer" type="Timer" parent="Countdown"]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="EndRoundScreen" type="VBoxContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(640, 360)
+offset_right = 8.0
+offset_bottom = 47.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Spacer" type="Control" parent="EndRoundScreen"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="EndRoundScreen"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vu7lj")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Spacer2" type="Control" parent="EndRoundScreen"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="PlayAgain" type="Button" parent="EndRoundScreen"]
+custom_minimum_size = Vector2(170, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vu7lj")
+theme_override_font_sizes/font_size = 16
+text = "play again"
+
+[node name="BackToMenu" type="Button" parent="EndRoundScreen"]
+custom_minimum_size = Vector2(190, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vu7lj")
+theme_override_font_sizes/font_size = 15
+text = "back to menu"
+
+[node name="PauseDim" type="ColorRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(640, 360)
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="PauseMenu" type="VBoxContainer" parent="." node_paths=PackedStringArray("pause_dim", "game_scene")]
+visible = false
+custom_minimum_size = Vector2(640, 360)
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 1
+script = ExtResource("7_l5kea")
+pause_dim = NodePath("../PauseDim")
+game_scene = NodePath("..")
+
+[node name="Label" type="Label" parent="PauseMenu"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme = ExtResource("5_vu7lj")
+text = "paused"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseMenu"]
+layout_mode = 2
+alignment = 1
+
+[node name="Continue" type="Button" parent="PauseMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vu7lj")
+theme_override_font_sizes/font_size = 12
+text = "continue"
+
+[node name="Restart" type="Button" parent="PauseMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vu7lj")
+theme_override_font_sizes/font_size = 12
+text = "restart"
+
+[node name="BackToMenu" type="Button" parent="PauseMenu"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("5_vu7lj")
+theme_override_font_sizes/font_size = 12
+text = "back to menu"
+
+[connection signal="body_entered" from="LeftGoal" to="." method="_on_left_goal_body_entered"]
+[connection signal="body_entered" from="RightGoal" to="." method="_on_right_goal_body_entered"]
+[connection signal="timeout" from="Countdown/Timer" to="Ball" method="_on_timer_timeout"]
+[connection signal="timeout" from="Countdown/Timer" to="Countdown" method="_on_timer_timeout"]
+[connection signal="pressed" from="EndRoundScreen/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="EndRoundScreen/BackToMenu" to="." method="_on_back_to_menu_pressed"]
+[connection signal="pressed" from="PauseMenu/HBoxContainer/Continue" to="PauseMenu" method="_on_continue_pressed"]
+[connection signal="pressed" from="PauseMenu/HBoxContainer/Restart" to="PauseMenu" method="_on_restart_pressed"]
+[connection signal="pressed" from="PauseMenu/BackToMenu" to="PauseMenu" method="_on_back_to_menu_pressed"]

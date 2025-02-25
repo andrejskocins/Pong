@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://0jyr3iyau70y"]
+
+[ext_resource type="Script" path="res://scenes/player.gd" id="1_xpdhr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_icvmv"]
+size = Vector2(10, 80)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_xpdhr")
+SPEED = 150
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_icvmv")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 80)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

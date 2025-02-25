@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqqy146ulk1lb"]
+
+[ext_resource type="Script" path="res://scenes/ball.gd" id="1_24qib"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gkw6d"]
+size = Vector2(10, 10)
+
+[node name="Ball" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_24qib")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gkw6d")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
